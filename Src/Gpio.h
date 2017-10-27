@@ -10,7 +10,27 @@
 
 #include"stdint.h"
 
+#define GPIOA_BASE_ADDR 	0x40020000
+#define GPIOB_BASE_DDR 		0x40020400
+#define GPIOC_BASE_ADDR 	0x40020800
+#define GPIOD_BASE_ADDR 	0x40020c00
+#define GPIOE_BASE_ADDR 	0x40021000
+#define GPIOF_BASE_ADDR 	0x40021400
 #define GPIOG_BASE_ADDR 	0x40021800
+#define GPIOH_BASE_ADDR 	0x40021C00
+#define GPIOI_BASE_ADDR 	0x40022000
+
+#define GpioA				((GpioReg *)(GPIOA_BASE_ADDR))
+#define GpioB				((GpioReg *)(GPIOB_BASE_ADDR))
+#define GpioC				((GpioReg *)(GPIOC_BASE_ADDR))
+#define GpioD				((GpioReg *)(GPIOD_BASE_ADDR))
+#define GpioE				((GpioReg *)(GPIOE_BASE_ADDR))
+#define GpioF				((GpioReg *)(GPIOF_BASE_ADDR))
+#define GpioG				((GpioReg *)(GPIOG_BASE_ADDR))
+#define GpioH				((GpioReg *)(GPIOH_BASE_ADDR))
+#define GpioI				((GpioReg *)(GPIOI_BASE_ADDR))
+
+
 #define GPIO_MODE_OFF		0X0
 #define GPIO_Otype_OFF		0X4
 #define GPIO_OSPEED_OFF		0X8
@@ -32,7 +52,8 @@ struct GpioReg {
 };
 
 
-#define GpioG				((GpioReg *)(GPIOG_BASE_ADDR))
+
+
 
 // pin modes
 #define GPIO_MODE_IN 		0
@@ -56,7 +77,7 @@ struct GpioReg {
 #define GPIO_PULL_DOWN		2
 
 
-void gpioGConfig(int pin, int mode, int outDriveType, int pullType, int speed);
-void gpioGWrite(int pin, int state);
+void gpioConfig(GpioReg *gpio,int pin, int mode, int outDriveType, int pullType, int speed);
+void gpioWrite(GpioReg *gpio, int pin, int state);
 
 #endif /* GPIO_H_ */
