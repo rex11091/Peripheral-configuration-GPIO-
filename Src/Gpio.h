@@ -1,7 +1,7 @@
 /*
  * Gpio.h
  *
- *  Created on: Oct 27, 2017
+ *  Created on: Oct 31, 2017
  *      Author: user
  */
 
@@ -45,7 +45,7 @@ struct GpioReg {
 	volatile uint32_t pullType;			//ch
 	volatile uint32_t inData;			//10h
 	volatile uint32_t outData;			//14h
-	volatile uint32_t bitData;			//18h
+	volatile uint32_t bsrr; 			//18h
 	volatile uint32_t lock;				//1ch
 	volatile uint32_t altFuncLow;		//20h
 	volatile uint32_t altFuncHi;			//24h
@@ -76,8 +76,13 @@ struct GpioReg {
 #define GPIO_PULL_UP		1
 #define GPIO_PULL_DOWN		2
 
+#define SET_PIN(gpio,pinNum)				(gpio->bsrr = (1 <<pinNum))
+#define RESET_PIN(gpio,pinNum)				(gpio->bsrr = (1 << (16 +pinNum)))
+//#define LOCK_PIN(gpio,pinNum)				(gpio->lock = (1 <<pinNum))
 
 void gpioConfig(GpioReg *gpio,int pin, int mode, int outDriveType, int pullType, int speed);
 void gpioWrite(GpioReg *gpio, int pin, int state);
+void LOCKPIN(GpioReg *gpio ,int pinNum);
 
 #endif /* GPIO_H_ */
+
