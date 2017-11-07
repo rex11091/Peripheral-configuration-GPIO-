@@ -31,7 +31,7 @@ struct NvicReg{
 };
 
 #define nvicEnableIrq(irqNum)					(Nvic->ISER[irqNum>>5] |= (1<< (irqNum &0x1f)))
-#define nvicDnableIrq(irqNum)					(Nvic->ICER[irqNum>>5] |= 1<< (irqNum &0x1f))
+#define nvicDisableIrq(irqNum)					(Nvic->ICER[irqNum>>5] |= 1<< (irqNum &0x1f))
 
 #define nvicSetPriority(irqNum,priority) 		(Nvic->IPR[irqNum>>2] |= priority<<((irqNum &0x3) *8 +4))
 

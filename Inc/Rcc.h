@@ -58,5 +58,26 @@ void enableGpioB(void);
 void enableGpioG(void);
 void enableRng(void);
 
+#define MCO_HSR_SRC				0
+#define MCO_LSE_SRC				1
+#define MCO_HSE_SRC				2
+#define MCO_PLL_SRC				3
+
+#define MCO_No_Division			0
+#define MCO_Division_2			4
+#define MCO_Division_3			5
+#define MCO_Division_4			6
+#define MCO_Division_5			7
+
+#define	MCO1Sel(x)				(Rcc->CFGR=(((Rcc->CFGR & ~(3<<21))|(x<<21))))
+#define	MCOPrescale(x)			(Rcc->CFGR=(((Rcc->CFGR & ~(7<<24))|(x<<24))))
+
+
+
+
+
+																					\
+
+
 #endif /* RCC_H_ */
 

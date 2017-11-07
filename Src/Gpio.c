@@ -44,3 +44,18 @@ void LOCKPIN(GpioReg *gpio ,int pinNum){
 	state = gpio->lock;
 
 }
+
+void gpioConfALTFunc(GpioReg *gpio,int pin , int AltFunction)
+{
+	if(pin>7)
+	{
+		gpio->altFuncHi &= ~(0xf <<pin * 4);
+		gpio->altFuncHi	|= (AltFunction << pin*4);
+	}
+	else
+	{
+		gpio->altFuncLow &= ~(0xf <<pin * 4);
+		gpio->altFuncLow |= (AltFunction << pin*4);
+	}
+}
+
