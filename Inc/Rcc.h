@@ -57,6 +57,7 @@ void enableGpioA(void);
 void enableGpioB(void);
 void enableGpioG(void);
 void enableRng(void);
+void enableTimer8(void);
 
 #define MCO_HSR_SRC				0
 #define MCO_LSE_SRC				1
@@ -71,7 +72,6 @@ void enableRng(void);
 
 #define	MCO1Sel(x)				(Rcc->CFGR=(((Rcc->CFGR & ~(3<<21))|(x<<21))))
 #define	MCOPrescale(x)			(Rcc->CFGR=(((Rcc->CFGR & ~(7<<24))|(x<<24))))
-
 
 
 

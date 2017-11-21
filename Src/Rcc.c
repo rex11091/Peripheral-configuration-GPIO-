@@ -37,3 +37,10 @@ void enableRng(void){
 	//start clock
 	Rcc->AHB2ENR |= 1<<6;
 }
+
+void enableTimer8(void){
+	//unreset
+	Rcc->APB2RSTR &= ~(1<<1);
+	//enable timer8
+	Rcc->APB2ENR |= 1<<1;
+}

@@ -44,7 +44,10 @@
 #include "Rng.h"
 #include "Systick.h"
 #include "ExTi.h"
+#include "timer.h"
+#include "DbgMcu.h"
 #include <stdio.h>
+
 
 /* USER CODE BEGIN Includes */
 #define greenLedPin		13
@@ -143,6 +146,12 @@ int main(void)
   FTSREnabled(blueButtonPin);
   //RTSRDisabled(blueButtonPin);
 
+/**
+ * ENABLE TIMER
+ **/
+  enableTimer8();
+  oneSecond();
+  haltTimer8WhenDebugging();
 
 //  getRandomNumberByInterrupt();
 
@@ -152,9 +161,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-	  //gpioWrite(GpioG,redLedPin,1);
-	  //gpioWrite(GpioG,redLedPin,0);
+	  waitTimer();
+	  gpioWrite(GpioG,redLedPin,1);
+	  waitTimer();
+	  gpioWrite(GpioG,redLedPin,0);
 	  //__WFI();
 	  //gpioWrite(GpioG,redLedPin,1);
 	  //__WFI();
@@ -317,6 +327,14 @@ void EXTI0_IRQHandler(void){
 
 
 }
+
+/* WAIT TIMER GO TO MAXIMUM AND CLEAR THE BIT*/
+void waitTimer(void){
+	while(!((Timer8->TIMx_SR)&1)){
+	}
+	Timer8->TIMx_SR = 0;
+}
+
 
 
 void My_SysTick_Handler(void){
