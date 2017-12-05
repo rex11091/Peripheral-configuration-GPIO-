@@ -46,6 +46,7 @@
 #include "ExTi.h"
 #include "timer.h"
 #include "DbgMcu.h"
+#include "flash.h"
 #include <stdio.h>
 
 
@@ -109,6 +110,8 @@ int main(void)
   enableRng();
   enableGpioA();
   enableGpioG();
+  enableGpioB();
+  enableGpioF();
   gpioConfig(GpioA,blueButtonPin, GPIO_MODE_IN, 0, GPIO_NO_PULL, 0);
   gpioConfig(GpioG,redLedPin, GPIO_MODE_OUT, GPIO_PUSH_PULL, GPIO_NO_PULL, GPIO_HI_SPEED);
   gpioConfig(GpioG,greenLedPin, GPIO_MODE_OUT, GPIO_PUSH_PULL, GPIO_NO_PULL, GPIO_HI_SPEED);
@@ -149,9 +152,9 @@ int main(void)
 /**
  * ENABLE TIMER
  **/
-  enableTimer8();
-  oneSecond();
-  haltTimer8WhenDebugging();
+  //enableTimer8();
+  //oneSecond();
+  //haltTimer8WhenDebugging();
 
 //  getRandomNumberByInterrupt();
 
@@ -159,26 +162,35 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+ // Flash->SR = FLASH_PGSERR;
+
+
+
+  if(flashEraseSection(12) == 1){
+//	  Flash->CR = 1;
+	  flashEnableProgramming(FLASH_BYTE_SIZE);
+	  writeMessage ("hello World",(char*)0x08080000);
+	  flashdisableProgramming();
+	  while(1);
+  }else{
+	  while(1);
+  }
+
+  //flashEraseSection(13);
+
   while (1)
   {
-	  waitTimer();
-	  gpioWrite(GpioG,redLedPin,1);
-	  waitTimer();
-	  gpioWrite(GpioG,redLedPin,0);
+	  //waitTimer();
+	  //gpioWrite(GpioG,redLedPin,1);
+	 // waitTimer();
+	//  gpioWrite(GpioG,redLedPin,0);
 	  //__WFI();
 	  //gpioWrite(GpioG,redLedPin,1);
 	  //__WFI();
 	  //gpioWrite(GpioG,redLedPin,0);
 	  //HAL_Delay(200);
 
-
-
-
-
-
-
-
-
+	  testI2C();
 
 
 	 // volatile uint32_t flag =1;

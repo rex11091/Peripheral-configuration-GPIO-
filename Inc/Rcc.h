@@ -56,8 +56,10 @@ extern uint32_t *rccAhb1En;
 void enableGpioA(void);
 void enableGpioB(void);
 void enableGpioG(void);
+void enableGpioF(void);
 void enableRng(void);
 void enableTimer8(void);
+void enabelI2C(int number);
 
 #define MCO_HSR_SRC				0
 #define MCO_LSE_SRC				1

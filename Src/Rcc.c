@@ -30,6 +30,12 @@ void enableGpioG(void){
 	//Start clock of GPIOG
 	*rccAhb1En |= 1 << 6;
 }
+void enableGpioF(void){
+	//unreset GPIOG
+	*rccAhb1Rst &= ~(1 << 7);
+	//Start clock of GPIOG
+	*rccAhb1En |= 1 << 7;
+}
 
 void enableRng(void){
 	//unreset
@@ -43,4 +49,12 @@ void enableTimer8(void){
 	Rcc->APB2RSTR &= ~(1<<1);
 	//enable timer8
 	Rcc->APB2ENR |= 1<<1;
+}
+
+void enabelI2C(int number){
+	//unreset
+	Rcc->APB1RSTR &= ~(1<<number);
+	//reset
+	Rcc->APB1ENR |= (1<<number);
+
 }
