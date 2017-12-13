@@ -69,5 +69,6 @@ void UsartTransmitter();
 void UsartReceiver();
 int DataWrite(uint32_t data);
 void StringDataWrite(char* data);
-int StringDataRead();
+uint8_t ReceiveByte();
+void stringReceiveUntilEnter(char *Data);
 #endif /* USART_H_ */

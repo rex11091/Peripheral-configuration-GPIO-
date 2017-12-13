@@ -45,7 +45,7 @@
  * */
 void InitUsart(){
 	enableUsart1();
-	Usart->CR1 = ENABLEUSART | M9databit | STOPBIT_2 |OVERSAMPLING_16 |ENABLEPCE|ODDPARITY;
+	Usart->CR1 = ENABLEUSART | M9databit |OVERSAMPLING_16 |ENABLEPCE|ODDPARITY;
 	Usart->CR2 |= STOPBIT_2;			// stopbit
 }
 
@@ -65,22 +65,31 @@ void StringDataWrite(char *data){
 	while(!(Usart->SR & USART1_SR_TXE));
 }
 
-int StringDataRead(){
-	while(!(Usart->SR & USART1_SR_RXNE));
-	return Usart->DR;
-
-}
-
 void UsartReceiver(){
 	Usart->CR1 |= ENABLERECEIVER;	//enable receiver
 }
-
 
 int DataWrite(uint32_t data){
 	Usart->DR = data ;
 	while(!(Usart->SR & USART1_SR_TXE));
 	//return 1;
 }
+
+uint8_t ReceiveByte(){
+	while(!(Usart->SR & USART1_SR_RXNE));
+	return (uint8_t)Usart->DR;
+}
+
+void stringReceiveUntilEnter(char *Data){
+	*(Data) = ReceiveByte();
+	while(*(Data)!=0xA){
+		Data++;
+		*(Data) = ReceiveByte();
+	}
+	*Data=0;
+}
+
+
 
 
 

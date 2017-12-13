@@ -49,6 +49,8 @@
 #include "flash.h"
 #include "I2c.h"
 #include "exti.h"
+#include <stdio.h>
+#include <string.h>
 
 /* USER CODE BEGIN Includes */
 #define greenLedPin		13
@@ -146,7 +148,7 @@ int main(void)
  // nvicSetPriority(6,9);
   nvicEnableIrq(6);
   nvicSetPriority(6,9);
-  sysTickDisable();
+ // sysTickDisable();
 
   InterruptEnable(blueButtonPin);
   FTSREnabled(blueButtonPin);
@@ -155,8 +157,8 @@ int main(void)
 /**
  * ENABLE TIMER
  **/
-  //enableTimer8();
-  //oneSecond();
+  enableTimer8();
+  oneSecond();
   //haltTimer8WhenDebugging();
 
 //  getRandomNumberByInterrupt();
@@ -203,14 +205,37 @@ int main(void)
   DataWrite(55);
   }
 
-  int Data = 0x55;
-  int Data1 = 0x77;
+
+
   */
+ // int Data = 0x55;
+ // int Data1 = 0x77;
+  char *Data = (char*)malloc(sizeof(char) * 100);
+ // volatile char yo=ReceiveByte();
   while (1)
   {
 
+	 // Data =ReceiveByte();
+	  //gpioWrite(GpioG,redLedPin,1);
+
 	  //int x[256]=0;
-	  //x= StringDataRead();
+	  stringReceiveUntilEnter(&Data);
+//	  volatile int zs=strcmp("turn on", &Data);
+	  if(strcmp("turn on", &Data) == 0){
+		  gpioWrite(GpioG,redLedPin,1);
+	  	  }
+	  else if(strcmp("turn off", &Data) == 0){
+	  	 gpioWrite(GpioG,redLedPin,0);
+	  	  }
+	  else if(strcmp("blinky", &Data) == 0){
+		  HAL_Delay(250);
+		 // waitTimer();
+		  gpioWrite(GpioG,redLedPin,1);
+		  HAL_Delay(250);
+		  //waitTimer();
+		  gpioWrite(GpioG,redLedPin,0);
+	  }
+	  else{}
 	 // DataWrite(Data);
 	 // DataWrite(Data1);
 	  //Data++;
