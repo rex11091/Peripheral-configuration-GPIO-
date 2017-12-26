@@ -49,6 +49,9 @@
 #include "flash.h"
 #include "I2c.h"
 #include "exti.h"
+#include "Dma.h"
+#include <malloc.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -56,6 +59,8 @@
 #define greenLedPin		13
 #define redLedPin		14
 #define blueButtonPin	0
+
+
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -83,6 +88,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+	volatile int i=0;
 	initialise_monitor_handles();
   /* USER CODE END 1 */
 
@@ -113,6 +119,7 @@ int main(void)
   enableGpioG();
   enableGpioB();
   enableGpioF();
+  enableGpioC();
   gpioConfig(GpioA,blueButtonPin, GPIO_MODE_IN, 0, GPIO_NO_PULL, 0);
   gpioConfig(GpioG,redLedPin, GPIO_MODE_OUT, GPIO_PUSH_PULL, GPIO_NO_PULL, GPIO_HI_SPEED);
   gpioConfig(GpioG,greenLedPin, GPIO_MODE_OUT, GPIO_PUSH_PULL, GPIO_NO_PULL, GPIO_HI_SPEED);
@@ -183,6 +190,10 @@ int main(void)
 */
   //flashEraseSection(13);
 
+
+
+
+
   /*
    * enableUSART
    * baud rate
@@ -199,6 +210,21 @@ int main(void)
   UsartTransmitter();
   UsartReceiver();
 
+  /*
+   * DMA
+   * */
+	//char *str = "hello\n";
+   enableDMA(DMA2_DEV);
+  // DmainitForUsart1(str);
+  // uart1EnableDmaTx();
+	//StringDataWrite("h");
+  // serialPrint("value : %d  , %s\n",1234,"Hi,bambi");
+  	  initTimer8Channel1();
+  	  ConfigureOutputCompare();
+  	//  timer8setCCR1value();
+  // forceOutCompareChannel1High();
+  // forceOutCompareChannel1Low();
+
 /*
   while (!(USART1_SR_TXE)){
 
@@ -210,32 +236,38 @@ int main(void)
   */
  // int Data = 0x55;
  // int Data1 = 0x77;
-  char *Data = (char*)malloc(sizeof(char) * 100);
+ // char *Data = (char*)malloc(sizeof(char) * 100);
+
+  	uint16_t	timerWaveForm[]= {BIT_0,BIT_PERIOD,BIT_1,BIT_PERIOD,BIT_PERIOD+2};
+  	DmainitForTimer8();
+  	DmasetAddressesAndSize((uint32_t)timerWaveForm,Timer8_CCR1,strlen(timerWaveForm));
  // volatile char yo=ReceiveByte();
   while (1)
   {
+	  //toggleOutCompareChannel1WithForce();
+	 // forceOutCompareChannel1High();
 
 	 // Data =ReceiveByte();
 	  //gpioWrite(GpioG,redLedPin,1);
 
 	  //int x[256]=0;
-	  stringReceiveUntilEnter(&Data);
-//	  volatile int zs=strcmp("turn on", &Data);
-	  if(strcmp("turn on", &Data) == 0){
-		  gpioWrite(GpioG,redLedPin,1);
-	  	  }
-	  else if(strcmp("turn off", &Data) == 0){
-	  	 gpioWrite(GpioG,redLedPin,0);
-	  	  }
-	  else if(strcmp("blinky", &Data) == 0){
-		  HAL_Delay(250);
+	  // stringReceiveUntilEnter(&Data);
+	  // volatile int zs=strcmp("turn on", &Data);
+	 // if(strcmp("turn on", &Data) == 0){
+	//	  gpioWrite(GpioG,redLedPin,1);
+	 // 	  }
+	//  else if(strcmp("turn off", &Data) == 0){
+	//  	 gpioWrite(GpioG,redLedPin,0);
+	//  	  }
+	  //else if(strcmp("blinky", &Data) == 0){
+//		  HAL_Delay(250);
 		 // waitTimer();
-		  gpioWrite(GpioG,redLedPin,1);
-		  HAL_Delay(250);
+		//  gpioWrite(GpioG,redLedPin,1);
+		//  HAL_Delay(250);
 		  //waitTimer();
-		  gpioWrite(GpioG,redLedPin,0);
-	  }
-	  else{}
+		//  gpioWrite(GpioG,redLedPin,0);
+  }
+	//  else{}
 	 // DataWrite(Data);
 	 // DataWrite(Data1);
 	  //Data++;
@@ -317,7 +349,7 @@ int main(void)
 	  LOCKPIN(GpioG,greenLedPin);
 	  gpioConfig(GpioG,greenLedPin, GPIO_MODE_IN, GPIO_PUSH_PULL, GPIO_NO_PULL, GPIO_HI_SPEED);
 	  */
-  }
+  //}
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */

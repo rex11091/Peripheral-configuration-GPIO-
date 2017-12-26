@@ -24,6 +24,14 @@ void enableGpioB(void){
 	*rccAhb1En |= 1 << 1;
 }
 
+void enableGpioC(void){
+	//unreset GPIOG
+	*rccAhb1Rst &= ~(1 << 2);
+	//Start clock of GPIOG
+	*rccAhb1En |= 1 << 2;
+}
+
+
 void enableGpioG(void){
 	//unreset GPIOG
 	*rccAhb1Rst &= ~(1 << 6);
@@ -64,4 +72,19 @@ void enableUsart1(void){
 	Rcc->APB2RSTR &= ~(1<<4);
 	//enable timer8
 	Rcc->APB2ENR |= 1<<4;
+}
+
+
+/**
+ * Enable and clock DMA
+ * @parameter dmaNumber is one of the following :
+ * 						DMA1_DEV or DMA2_DEV
+ *
+ */
+
+void enableDMA(int dmaNumber){
+	//Unreset USART1
+	Rcc->AHB1RSTR &= ~(1 <<(21 + dmaNumber));
+	//Start clock of USART1
+	Rcc->AHB1ENR |= 1 << (21 + dmaNumber);
 }

@@ -4,12 +4,27 @@
  *  Created on: Dec 12, 2017
  *      Author: user
  */
-
+/*
+ * 	Usart.c
+ *
+ * The connection between UART1 Pins on STM32F429ZIT6 abd the USB-to-serial
+ * (CH340) are as follow
+ *
+ *
+ * 	STM32F429ZIT6	|   CH340
+ * 	Name	  Pin	|	Name
+ * -----------------------------
+ * 	TX		 PA9	|	RX
+ *	RX		 PA10	|	TX
+ *-------------------------------
+ */
 
 
 
 #include "USART.h"
 #include "Rcc.h"
+#include <stdio.h>
+#include <stdarg.h>
 
 //------------------------------------------transmitter--------------------------------------------------------------------
 //1. Enable the USART by writing the UE bit in USART_CR1 register to 1.
@@ -59,8 +74,6 @@ void UsartTransmitter(){
 }
 
 void StringDataWrite(char *data){
-
-
 	Usart->DR =*data;
 	while(!(Usart->SR & USART1_SR_TXE));
 }
@@ -89,7 +102,30 @@ void stringReceiveUntilEnter(char *Data){
 	*Data=0;
 }
 
+//serialPrint
+void serialPrint(char *format,...){
+	va_list	args;
+	char* buffer;
+	int i,length;
 
+	va_start(args,format);
+
+	length = vsnprintf(buffer,0,format,args);
+	buffer = malloc(length + 1);
+	vsnprintf(buffer,length+1,format,args);
+
+	while(i<length){
+		StringDataWrite(&(buffer[i]));
+		i++;
+	}
+/*
+	for(i = 0 ; i< length ; i++){
+		// Send the character byte-by-byte
+		StringDataWrite(buffer[i]);
+	}
+	*/
+	free(buffer);
+}
 
 
 

@@ -58,9 +58,17 @@ struct UsartReg{
 #define ENABLERECEIVER					(1<<2)
 #define DISABLERECEIVER					~(1<<2)
 
+//Cr3 configuration
+#define DMATransmitEN					(1<<7)
+#define DMATransmitRst					~(1<<7)
+#define DMAReceiveEn					(1<<6)
+
 #define USART1_SR_TXE					(1<<7)
 #define USART1_SR_TC					(1<<6)
 #define USART1_SR_RXNE					(1<<5)
+
+#define uart1EnableDmaTx()		(Usart->CR3 |= DMATransmitEN)
+#define uart1EnableDmaRx()		(Usart->CR3 |= DMAReceiveEN)
 
 
 void InitUsart();
@@ -71,4 +79,5 @@ int DataWrite(uint32_t data);
 void StringDataWrite(char* data);
 uint8_t ReceiveByte();
 void stringReceiveUntilEnter(char *Data);
+void serialPrint(char *format,...);
 #endif /* USART_H_ */

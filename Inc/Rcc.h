@@ -9,6 +9,7 @@
 #define RCC_H_
 
 #include"stdint.h"
+#include "Common.h"
 
 #define RCC_BASE_ADDR		0x40023800
 #define RCC_AHB1RST_OFF		0x10
@@ -56,11 +57,13 @@ extern uint32_t *rccAhb1En;
 void enableGpioA(void);
 void enableGpioB(void);
 void enableGpioG(void);
+void enableGpioC(void);
 void enableGpioF(void);
 void enableRng(void);
 void enableTimer8(void);
 void enabelI2C(int number);
 void enableUsart1(void);
+void enableDMA(int dmaNumber);
 
 #define MCO_HSR_SRC				0
 #define MCO_LSE_SRC				1
@@ -77,7 +80,9 @@ void enableUsart1(void);
 #define	MCOPrescale(x)			(Rcc->CFGR=(((Rcc->CFGR & ~(7<<24))|(x<<24))))
 
 
-
+//DMA
+#define DMA1_DEV			0
+#define DMA2_DEV			1
 
 																					\
 
