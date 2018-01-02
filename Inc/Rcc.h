@@ -64,6 +64,7 @@ void enableTimer8(void);
 void enabelI2C(int number);
 void enableUsart1(void);
 void enableDMA(int dmaNumber);
+void enableADC1(void);
 
 #define MCO_HSR_SRC				0
 #define MCO_LSE_SRC				1

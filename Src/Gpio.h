@@ -75,7 +75,7 @@ struct GpioReg {
 #define GPIO_MODE_IN 		0
 #define GPIO_MODE_OUT 		1
 #define GPIO_MODE_AF		2
-#define GPIO_MODE_ANA	3
+#define GPIO_MODE_ANA		3
 
 // pin output drive type
 #define GPIO_PUSH_PULL		0

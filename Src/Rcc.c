@@ -88,3 +88,11 @@ void enableDMA(int dmaNumber){
 	//Start clock of USART1
 	Rcc->AHB1ENR |= 1 << (21 + dmaNumber);
 }
+
+void enableADC1(void){
+	//unreset
+	Rcc->APB2RSTR &= ~(1<<8);
+	//enable timer8
+	Rcc->APB2ENR |= 1<<8;
+}
+

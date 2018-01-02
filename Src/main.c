@@ -50,6 +50,7 @@
 #include "I2c.h"
 #include "exti.h"
 #include "Dma.h"
+#include "ADC.h"
 #include <malloc.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -164,8 +165,8 @@ int main(void)
 /**
  * ENABLE TIMER
  **/
-  enableTimer8();
-  oneSecond();
+//  enableTimer8();
+ // oneSecond();
   //haltTimer8WhenDebugging();
 
 //  getRandomNumberByInterrupt();
@@ -214,13 +215,13 @@ int main(void)
    * DMA
    * */
 	//char *str = "hello\n";
-   enableDMA(DMA2_DEV);
+ //  enableDMA(DMA2_DEV);
   // DmainitForUsart1(str);
   // uart1EnableDmaTx();
 	//StringDataWrite("h");
   // serialPrint("value : %d  , %s\n",1234,"Hi,bambi");
-  	  initTimer8Channel1();
-  	  ConfigureOutputCompare();
+  //	  initTimer8Channel1();
+  //	  ConfigureOutputCompare();
   	//  timer8setCCR1value();
   // forceOutCompareChannel1High();
   // forceOutCompareChannel1Low();
@@ -231,19 +232,38 @@ int main(void)
   DataWrite(55);
   }
 
-
-
   */
+ //ADC
+gpioConfig(GpioA,5, GPIO_MODE_ANA, GPIO_PUSH_PULL, GPIO_NO_PULL,GPIO_HI_SPEED );
+gpioConfig(GpioC,3, GPIO_MODE_ANA, GPIO_PUSH_PULL, GPIO_NO_PULL,GPIO_HI_SPEED );
+//initADC();
+
+int channels[]={5,13};
+
+adcSetChannelSamplingSequence(adc1,channels,2);
+//printf("%d\n",ADC1->DR);
+
+
+
  // int Data = 0x55;
  // int Data1 = 0x77;
  // char *Data = (char*)malloc(sizeof(char) * 100);
 
-  	uint16_t	timerWaveForm[]= {BIT_0,BIT_PERIOD,BIT_1,BIT_PERIOD,BIT_PERIOD+2};
-  	DmainitForTimer8();
-  	DmasetAddressesAndSize((uint32_t)timerWaveForm,Timer8_CCR1,strlen(timerWaveForm));
+  	//uint16_t	timerWaveForm[]= {BIT_0,BIT_PERIOD,BIT_1,BIT_PERIOD,BIT_PERIOD+2};
+  	//DmainitForTimer8();
+  //	DmasetAddressesAndSize((uint32_t)timerWaveForm,Timer8_CCR1,strlen(timerWaveForm));
  // volatile char yo=ReceiveByte();
   while (1)
   {
+
+	//  int data = adc1->DR;
+
+	 // int data2 = adc1->DR;
+
+	 // float volt =((3.3 * data)/4096);
+	 // float volt2 =((3.3 * data2)/4096);
+	//  printf("%f\n",volt);
+	 // printf("%f\n",volt2);
 	  //toggleOutCompareChannel1WithForce();
 	 // forceOutCompareChannel1High();
 
